@@ -1,0 +1,40 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.73.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 c5cd2687eb47142e910b2f607535792bbf7bbd04 Changes
+SHA1 226332c2f56c8c944c1a83ee08597de37790e26f MANIFEST
+SHA1 7d20e4e840781030202bb045d5ab81b3fd1b68b0 MANIFEST.SKIP
+SHA1 b618a7d1811ae108ee4cfd22c8131a7193fd81ed Makefile.PL
+SHA1 cf6245aa9d3b5f5f6ad43cdc239188d57452220f README
+SHA1 44f769c90f1974a3b0cfe568e698d803521ad1d7 lib/Games/Cards/Pair.pm
+SHA1 e6e9c0cdf5f17d0d6e8db0f3dc2284fbcca44a00 lib/Games/Cards/Pair/Card.pm
+SHA1 3ba415c9b6ac33c4bc41d419ab6cd4b4ee08c511 script/play-pair.pl
+SHA1 852981048c6975f380925ffbc300cc742b367630 t/00-load.t
+SHA1 709b901c22ee7418826ab112c7d62f5fe51af495 t/01-Games-Cards-Pair.t
+SHA1 a4f0bc3641a2f0459f7036ca03b1297e804c857b t/02-Games-Cards-Pair-Card.t
+SHA1 dceb9f9002c01ba38fb849fd3e8771c3d295f86b t/manifest.t
+SHA1 1abacf3a7c24642711bc71851ffe79e148b3683e t/pod.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAEBAgAGBQJUQ2yKAAoJENoXJXWo7C/pXRAIAIcf6syhwdabpgm8zB0X90Xf
+WCAAWrRRowvcKgmiYoUsGg7EoFlftfEVZ/k06hXsiypyBMQDZS8jKcmJfjsF9yN7
+EOCMVQHIPbYiENrjNZYnGKAn9SAea0iFxYklWV0fcps8ozTQ80agpNataAFehE20
+SLSi6QrTpiWSdx0ZFM+6keTkZaH9dLT55/z/wYosUdY926aVFK9OxyAFxynP9X/t
+VOl1Vdz2yelX+SArzDecqDptTBycQ7ie9gPW36eAhA9xOgu2zE5zCghv2Gk/C2Df
+UcAobp1zX+WF7lJMwTtTyqRs/xMokm7ZwClDjBS/j4K8iAhyOxKrJPqfxEOkdcA=
+=zgM1
+-----END PGP SIGNATURE-----
