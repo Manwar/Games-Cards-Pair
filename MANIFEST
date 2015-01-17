@@ -4,7 +4,6 @@ lib/Games/Cards/Pair/Card.pm
 lib/Games/Cards/Pair/Params.pm
 script/play-pair.pl
 Makefile.PL
-SIGNATURE
 MANIFEST
 MANIFEST.SKIP
 README

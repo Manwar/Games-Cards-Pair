@@ -1,6 +1,6 @@
 package Games::Cards::Pair;
 
-$Games::Cards::Pair::VERSION = '0.08';
+$Games::Cards::Pair::VERSION = '0.09';
 
 =head1 NAME
 
@@ -8,7 +8,7 @@ Games::Cards::Pair - Interface to the Pelmanism (Pair) Card Game.
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
@@ -317,7 +317,7 @@ L<http://search.cpan.org/dist/Games-Cards-Pair/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012 - 2014 Mohammad S Anwar.
+Copyright (C) 2012 - 2015 Mohammad S Anwar.
 
 This  program  is  free software; you can redistribute it and/or modify it under
 the  terms  of the the Artistic License (2.0). You may obtain a copy of the full

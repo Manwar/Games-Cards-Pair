@@ -1,5 +1,10 @@
 Revision history for Games-Cards-Pair
 
+0.09  Sat Jan 17 00:55:30 2015
+      - Removed SIGNATURE file.
+      - Updated MANIFEST.SKIP file to ignore folder 'eumm/'.
+      - Updated Copyright year information.
+
 0.08  Mon Oct 20 07:15:30 2014
       - Removed the reference of 'Mouse' from the package Games::Cards::Pair::Card.
 
