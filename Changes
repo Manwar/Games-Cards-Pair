@@ -1,5 +1,8 @@
 Revision history for Games-Cards-Pair
 
+0.10  Mon Mar 09 13:55:30 2015
+      - Added LICENSE file.
+
 0.09  Sat Jan 17 00:55:30 2015
       - Removed SIGNATURE file.
       - Updated MANIFEST.SKIP file to ignore folder 'eumm/'.
