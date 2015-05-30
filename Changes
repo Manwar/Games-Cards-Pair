@@ -1,5 +1,15 @@
 Revision history for Games-Cards-Pair
 
+0.11  Sat May 30 21:15:00 2015
+      - Made the game interactive (long overdue).
+      - Renamed game script play-pelmanism.
+      - Added section "SYNOPSIS" to the pod document.
+      - Updated section "DESCRIPTION" to respect the above changes.
+      - Added method init(), is_valid_card_count() and _pick().
+      - Updated Games::Cards::Pair::Card::as_string().
+      - Updated the card value as 1-10,A,J,K,Q.
+      - Updated the card suite as C,D,H,S.
+
 0.10  Mon Mar 09 13:55:30 2015
       - Added LICENSE file.
 

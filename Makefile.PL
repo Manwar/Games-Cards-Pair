@@ -9,6 +9,7 @@ WriteMakefile(
     VERSION_FROM       => 'lib/Games/Cards/Pair.pm',
     ABSTRACT_FROM      => 'lib/Games/Cards/Pair.pm',
     LICENSE            => 'artistic_2',
+    EXE_FILES          => [ 'script/play-pelmanism' ],
     PL_FILES           => {},
     MIN_PERL_VERSION   => 5.006,
     CONFIGURE_REQUIRES => {
@@ -21,6 +22,7 @@ WriteMakefile(
         'Attribute::Memoize' => 1.01,
         'List::Util'         => 1.19,
         'List::MoreUtils'    => 0.33,
+        'Term::Screen::Lite' => 0,
         'Moo'                => 0,
         'namespace::clean'   => 0,
     },

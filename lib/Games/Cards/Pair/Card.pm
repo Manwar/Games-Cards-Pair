@@ -1,6 +1,6 @@
 package Games::Cards::Pair::Card;
 
-$Games::Cards::Pair::Card::VERSION = '0.10';
+$Games::Cards::Pair::Card::VERSION = '0.11';
 
 =head1 NAME
 
@@ -8,17 +8,18 @@ Games::Cards::Pair::Card - Object representation of a card.
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =cut
 
 use 5.006;
 use Data::Dumper;
-use overload ( '""'  => \&as_string );
 use Games::Cards::Pair::Params qw($Num $Value $Suit);
 
 use Moo;
 use namespace::clean;
+
+use overload ( '""'  => \&as_string );
 
 has 'index' => (is => 'rw', isa => $Num );
 has 'suit'  => (is => 'ro', isa => $Suit);
@@ -94,9 +95,9 @@ Returns the card object in readable format. This is overloaded as string context
 sub as_string {
     my ($self) = @_;
 
-    return sprintf("[%s of %s]", $self->value, $self->suit) if defined $self->suit;
+    return sprintf("%4s%s", $self->value, $self->suit) if defined $self->suit;
 
-    return sprintf("[%s]", $self->value);
+    return sprintf("%5s", $self->value);
 }
 
 =head1 AUTHOR

@@ -1,6 +1,6 @@
 package Games::Cards::Pair;
 
-$Games::Cards::Pair::VERSION = '0.10';
+$Games::Cards::Pair::VERSION = '0.11';
 
 =head1 NAME
 
@@ -8,124 +8,116 @@ Games::Cards::Pair - Interface to the Pelmanism (Pair) Card Game.
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =cut
 
 use 5.006;
 use Data::Dumper;
-use overload ('""'  => \&as_string);
 
 use Attribute::Memoize;
 use List::Util qw(shuffle);
 use List::MoreUtils qw(first_index);
+use Term::Screen::Lite;
 use Games::Cards::Pair::Params qw($ZeroOrOne $Num);
 use Games::Cards::Pair::Card;
 
 use Moo;
 use namespace::clean;
 
+use overload ('""' => \&as_string);
+
+has 'cards'     => (is => 'rw', default => sub { 12 });
 has 'bank'      => (is => 'rw');
 has 'seen'      => (is => 'rw');
 has 'board'     => (is => 'rw');
 has 'available' => (is => 'ro');
-has 'count'     => (is => 'rw', isa => $Num,       default => sub { return 0 });
-has 'debug'     => (is => 'rw', isa => $ZeroOrOne, default => sub { return 0 });
+has 'screen'    => (is => 'ro', default => sub { Term::Screen::Lite->new; });
+has 'count'     => (is => 'rw', isa => $Num,       default => sub { 0 });
+has 'debug'     => (is => 'rw', isa => $ZeroOrOne, default => sub { 0 });
 
 =head1 DESCRIPTION
 
-A single-player game of Pelmanism, played by the program, as of now but very soon
-I would make it an interactive game so that human can also play with it.A pack of
-cards comprises each of the thirteen values (2, 3, 4, 6, 7, 8, 9, 10, Queen, King
-, Ace, Jack ) in each of the four suits ( Clubs,  Diamonds, Hearts, Spades ) plus
-two jokers. The Joker will not have any suit.
+A single-player game of Pelmanism, played with minimum of 12 cards and maximum up
+to 54 cards. Depending on number of cards choosen the user, it prepares the game.
 
-=cut
+Cards picked up from the collection comprises each of the thirteen values (2,3,4,
+6,7,8,9,10,Queen,King,Ace,Jack) in each of the four suits (Clubs,Diamonds,Hearts,
+Spades) plus two jokers. The Joker will not have any suit.
 
-sub BUILD {
-    my ($self) = @_;
+=head1 SYNOPSIS
 
-    my $cards = [];
-    foreach my $suit (qw(Clubs Diamonds Hearts Spades)) {
-        foreach my $value (qw(Ace 2 3 4 5 6 7 8 9 10 Jack Queen King)) {
-            push @$cards, Games::Cards::Pair::Card->new({ suit => $suit, value => $value });
-        }
-    }
+Below is the working code  for the Pelmanism game using the L<Games::Cards::Pair>
+package. The game script C<play-pelmanism> is supplied with the distribution  and
+on install is available to play with.
 
-    # Adding two Jokers to the Suit.
-    push @$cards, Games::Cards::Pair::Card->new({ value => 'Joker' });
-    push @$cards, Games::Cards::Pair::Card->new({ value => 'Joker' });
-    push @{$self->{available}}, $_ for (0..53);
+    use strict; use warnings;
+    use Games::Cards::Pair;
 
-    # Index card after shuffle.
-    $self->_index($cards);
-}
+    $|=1;
+
+    $SIG{'INT'} = sub { print {*STDOUT} "\n\nCaught Interrupt (^C), Aborting\n"; exit(1); };
+
+    my $game = Games::Cards::Pair->new({debug => 1});
+
+    my ($count);
+    do {
+        print {*STDOUT} "How many cards do you want to play with? (min:12, max:54): ";
+        $count = <STDIN>;
+        chomp($count);
+    } until ($game->is_valid_card_count($count));
+
+    $game->cards($count);
+
+    my ($response);
+    do {
+        $game->init;
+        print {*STDOUT} $game->get_board;
+        print {*STDOUT} "You have 30 seconds to memorise the card positions.\n";
+        sleep 30;
+        $game->screen->clear;
+
+        do {
+            my ($cards);
+            print {*STDOUT} $game->as_string(1);
+            do {
+                print {*STDOUT} "Pick pair of cards: ";
+                $cards = <STDIN>;
+                chomp($cards);
+            } until ($cards =~ /^\d+\,\d+$/);
+
+            $game->play($cards);
+
+        } until ($game->is_over);
+
+        print "\n\nTotal moves [" . $game->count . "]\n";
+
+        do {
+            print {*STDOUT} "Do you wish to continue (Y/N)? ";
+            $response = <STDIN>;
+            chomp($response);
+        } until (defined $response && ($response =~ /^[Y|N]$/i));
+
+    } until ($response =~ /^N$/i);
+
+    print {*STDOUT} "Thank you.\n";
+
+Once it is installed, it can be played on a terminal/command window  as below:
+
+    $ play-pelmanism
 
 =head1 METHODS
 
-=head2 draw()
+=head2 play($index)
 
-Returns  a  card  randomly  selected  from  the  deck or undef if it is empty. If
-previously  seen  similar  value  card  then  returns  that  card. There  are two
-flavours  of  this  method, if it is  called without any parameter then it simply
-returns  the  randomly picked card from the deck. And it if it's called passing a
-card then  it checks   whether we have seen any similar value card before or not.
-If  yes then it picks that card and made the match otherwise picks another random
-card from the deck.
-
-    use strict; use warnings;
-    use Games::Cards::Pair;
-
-    my $game = Games::Cards::Pair->new();
-    my $card = $game->draw();
-    print "Card picked: $card\n";
+Accepts comma separated card indices and play the game.
 
 =cut
 
-sub draw {
-    my ($self, $card) = @_;
+sub play {
+    my ($self, $index) = @_;
 
-    $self->{count}++;
-    if (not defined $card) {
-        $card = $self->_draw();
-        print "Card 1 picked $card.\n" if $self->debug;
-        return $card;
-    }
-
-    die("ERROR: Invalid card received.\n") unless (ref($card) eq 'Games::Cards::Pair::Card');
-
-    my $new = $self->_seen($card);
-    if (defined $new) {
-        print "Card 2 picked previously seen $new.\n" if $self->debug;
-        return $new;
-    }
-
-    $new = $self->_draw();
-    if (defined $new) {
-        push @{$self->{seen}}, $new;
-        print "Card 2 picked $new.\n" if $self->debug;
-    }
-
-    return $new;
-}
-
-=head2 process()
-
-Check if the two given cards are the same and act accordingly.
-
-    use strict; use warnings;
-    use Games::Cards::Pair;
-
-    my ($game, $card1, $card2);
-    $game  = Games::Cards::Pair->new();
-    $card1 = $game->draw();
-    $card2 = $game->draw($card1);
-    $game->process($card1, $card2);
-
-=cut
-
-sub process {
-    my ($self, $card, $new) = @_;
+    my ($card, $new) = $self->_pick($index);
 
     if ($new->equal($card)) {
         $self->_process($new, $card);
@@ -134,70 +126,79 @@ sub process {
         $self->{deck}->{$new->index}  = $new;
         $self->{deck}->{$card->index} = $card;
     }
-
-    ($self->debug) && (print "$self\n" && sleep 1);
 }
 
 =head2 is_over()
 
 Returns 1 or 0 depending if the deck is empty or not.
 
-    use strict; use warnings;
-    use Games::Cards::Pair;
-
-    my $game = Games::Cards::Pair->new();
-    print "Game is not over yet.\n" unless $game->is_over;
-
 =cut
 
 sub is_over {
     my ($self) = @_;
 
-    return 1 if (scalar(@{$self->{available}}) == 0);
-    return 0;
+    return (scalar(@{$self->{available}}) == 0);
 }
 
-=head2 as_string()
+=head2 get_board()
 
-Returns deck arranged as 6 x 9 blocks. This is overloaded as string context.
-
-    use strict; use warnings;
-    use Games::Cards::Pair;
-
-    my $game = Games::Cards::Pair->new();
-    print $game->as_string() . "\n";
-    print "Is same as before:\n $game\n";
+Return game board with hidden card, showing only the card index.
 
 =cut
 
-sub as_string {
+sub get_board {
+    return $_[0]->as_string(0);
+}
+
+=head2 is_valid_card_count($count)
+
+Valid card count is any number between 12 and 54 (both inclusive). Also it should
+be a multiple of 4.
+
+=cut
+
+sub is_valid_card_count {
+    my ($self, $count) = @_;
+
+    return (defined $count
+            && ($count =~ /^\d+$/)
+            && ($count >=12 || $count <= 54)
+            && ($count % 4 == 0));
+}
+
+=head2 init()
+
+Shuffles the pack and then pick required number of cards.
+
+=cut
+
+sub init {
     my ($self) = @_;
 
-    my $deck = '';
-    foreach my $i (1..54) {
-        my $card = $self->{deck}->{$i-1};
-        $deck .= sprintf("[ %s ] ", defined($card)?'C':' ');
-        $deck .= "\n" if ($i % 9 == 0);
+    my $cards = [];
+    $self->{available} = [];
+    my $i = $self->cards / 4;
+    foreach my $suit (qw(C D H S)) {
+        my $j = 1;
+        foreach my $value (qw(A 2 3 4 5 6 7 8 9 10 J Q K)) {
+            next if ($j > $i);
+            push @$cards, Games::Cards::Pair::Card->new({ suit => $suit, value => $value });
+            $j++;
+        }
     }
 
-    return $deck;
+    # Adding two Jokers to the Suit.
+    push @$cards, Games::Cards::Pair::Card->new({ value => 'Joker' });
+    push @$cards, Games::Cards::Pair::Card->new({ value => 'Joker' });
+    push @{$self->{available}}, $_ for (0..$self->cards-1);
+
+    # Index card after shuffle.
+    $self->_index($cards);
 }
 
 =head2 get_matched_pairs()
 
 Returns all the matching pair, if any found, from the bank.
-
-    use strict; use warnings;
-    use Games::Cards::Pair;
-
-    my $game = Games::Cards::Pair->new();
-    do {
-        my $card1 = $game->draw();
-        my $card2 = $game->draw($card1);
-        $game->process($card1, $card2);
-    } until ($game->is_over());
-
-    print "Matched cards:\n" . $game->get_matched_pairs();
 
 =cut
 
@@ -212,6 +213,57 @@ sub get_matched_pairs {
     return $string;
 }
 
+=head2 as_string()
+
+Returns deck arranged as 4 in a row blocks. This is overloaded as string context.
+
+=cut
+
+sub as_string {
+    my ($self, $hide) = @_;
+
+    my $deck = '';
+    foreach my $i (1..$self->cards) {
+        my $card = $self->{deck}->{$i-1};
+        my $c = '     ';
+        if (defined $card) {
+            if ($hide) {
+                $c = $i;
+            }
+            else {
+                $c = $card->as_string;
+            }
+        }
+
+        $deck .= sprintf("[ %5s ]", $c);
+        $deck .= "\n" if ($i % 4 == 0);
+    }
+
+    return $deck;
+}
+
+#
+#
+# PRIVATE METHODS
+
+sub _pick {
+    my ($self, $index) = @_;
+
+    $self->{count}++;
+
+    my ($i, $j) = split /\,/, $index, 2;
+    --$i; --$j;
+    my $c1 = $self->{deck}->{$i};
+    die "ERROR: Invalid card received [$i].\n" unless defined $c1;
+
+    my $c2 = $self->{deck}->{$j};
+    die "ERROR: Invalid card received [$j].\n" unless defined $c2;
+
+    push @{$self->{seen}}, $c1, $c2;
+
+    return ($c1, $c2);
+}
+
 sub _save {
     my ($self, @cards) = @_;
 
@@ -223,7 +275,6 @@ sub _save {
 sub _process {
     my ($self, $card, $new) = @_;
 
-    print "MATCHED !!!!!!!!!!!\n" if $self->debug;
     $self->{deck}->{$new->index}  = undef;
     $self->{deck}->{$card->index} = undef;
     $self->_save($card, $new);
@@ -244,6 +295,7 @@ sub _index {
         $card->index($index);
         $self->{deck}->{$index} = $card;
         $index++;
+        last if ($self->cards == $index);
     }
 }
 
