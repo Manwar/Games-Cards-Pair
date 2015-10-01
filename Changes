@@ -1,5 +1,9 @@
 Revision history for Games-Cards-Pair
 
+0.12  Thu Oct 01 10:10:00 2015
+      - Added $AUTHORITY to each package of the distribution.
+      - Updated the section "DESCRIPTION" in the pod document.
+
 0.11  Sat May 30 21:15:00 2015
       - Made the game interactive (long overdue).
       - Renamed game script play-pelmanism.

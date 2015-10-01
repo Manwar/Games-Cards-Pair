@@ -1,6 +1,7 @@
 package Games::Cards::Pair;
 
-$Games::Cards::Pair::VERSION = '0.11';
+$Games::Cards::Pair::VERSION   = '0.12';
+$Games::Cards::Pair::AUTHORITY = 'cpan:MANWAR';
 
 =head1 NAME
 
@@ -8,7 +9,7 @@ Games::Cards::Pair - Interface to the Pelmanism (Pair) Card Game.
 
 =head1 VERSION
 
-Version 0.11
+Version 0.12
 
 =cut
 
@@ -42,8 +43,8 @@ A single-player game of Pelmanism, played with minimum of 12 cards and maximum u
 to 54 cards. Depending on number of cards choosen the user, it prepares the game.
 
 Cards picked up from the collection comprises each of the thirteen values (2,3,4,
-6,7,8,9,10,Queen,King,Ace,Jack) in each of the four suits (Clubs,Diamonds,Hearts,
-Spades) plus two jokers. The Joker will not have any suit.
+5,6,7,8,9,10,Queen,King,Ace and Jack) in  each of the four suits (Clubs,Diamonds,
+Hearts and Spades) plus two jokers. The Joker will not have any suit.
 
 =head1 SYNOPSIS
 
