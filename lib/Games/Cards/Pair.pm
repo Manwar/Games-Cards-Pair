@@ -1,6 +1,6 @@
 package Games::Cards::Pair;
 
-$Games::Cards::Pair::VERSION   = '0.12';
+$Games::Cards::Pair::VERSION   = '0.13';
 $Games::Cards::Pair::AUTHORITY = 'cpan:MANWAR';
 
 =head1 NAME
@@ -9,7 +9,7 @@ Games::Cards::Pair - Interface to the Pelmanism (Pair) Card Game.
 
 =head1 VERSION
 
-Version 0.12
+Version 0.13
 
 =cut
 
@@ -331,7 +331,7 @@ Mohammad S Anwar, C<< <mohammad.anwar at yahoo.com> >>
 
 =head1 REPOSITORY
 
-L<https://github.com/Manwar/Games-Cards-Pair>
+L<https://github.com/manwar/Games-Cards-Pair>
 
 =head1 BUGS
 
@@ -370,7 +370,7 @@ L<http://search.cpan.org/dist/Games-Cards-Pair/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (C) 2012 - 2015 Mohammad S Anwar.
+Copyright (C) 2012 - 2016 Mohammad S Anwar.
 
 This program  is  free software; you can redistribute it and / or modify it under
 the  terms  of the the Artistic License (2.0). You may obtain a  copy of the full

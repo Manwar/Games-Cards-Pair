@@ -1,5 +1,9 @@
 Revision history for Games-Cards-Pair
 
+0.13  Thu Mar 24 15:25:00 2016
+      - Added key 'provides' to the Makefile.PL script.
+      - Updated copyright year information.
+
 0.12  Thu Oct 01 10:10:00 2015
       - Added $AUTHORITY to each package of the distribution.
       - Updated the section "DESCRIPTION" in the pod document.
