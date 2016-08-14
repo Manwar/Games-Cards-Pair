@@ -1,4 +1,7 @@
-Revision history for Games-Cards-Pair
+Revision history for Games::Cards::Pair
+
+0.14  Sun Aug 14 08:10:00 2016
+      - Added test scripts (t/meta-json.t and t/meta-yml.t).
 
 0.13  Thu Mar 24 15:25:00 2016
       - Added key 'provides' to the Makefile.PL script.

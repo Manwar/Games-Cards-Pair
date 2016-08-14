@@ -13,3 +13,5 @@ t/01-Games-Cards-Pair.t
 t/02-Games-Cards-Pair-Card.t
 t/manifest.t
 t/pod.t
+t/meta-json.t
+t/meta-yml.t
