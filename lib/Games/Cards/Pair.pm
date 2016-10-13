@@ -1,6 +1,6 @@
 package Games::Cards::Pair;
 
-$Games::Cards::Pair::VERSION   = '0.14';
+$Games::Cards::Pair::VERSION   = '0.15';
 $Games::Cards::Pair::AUTHORITY = 'cpan:MANWAR';
 
 =head1 NAME
@@ -9,7 +9,7 @@ Games::Cards::Pair - Interface to the Pelmanism (Pair) Card Game.
 
 =head1 VERSION
 
-Version 0.14
+Version 0.15
 
 =cut
 
@@ -20,7 +20,8 @@ use Attribute::Memoize;
 use List::Util qw(shuffle);
 use List::MoreUtils qw(first_index);
 use Term::Screen::Lite;
-use Games::Cards::Pair::Params qw($ZeroOrOne $Num);
+use Types::Standard qw(Int);
+use Games::Cards::Pair::Params qw(ZeroOrOne);
 use Games::Cards::Pair::Card;
 
 use Moo;
@@ -34,8 +35,8 @@ has 'seen'      => (is => 'rw');
 has 'board'     => (is => 'rw');
 has 'available' => (is => 'ro');
 has 'screen'    => (is => 'ro', default => sub { Term::Screen::Lite->new; });
-has 'count'     => (is => 'rw', isa => $Num,       default => sub { 0 });
-has 'debug'     => (is => 'rw', isa => $ZeroOrOne, default => sub { 0 });
+has 'count'     => (is => 'rw', isa => Int,       default => sub { 0 });
+has 'debug'     => (is => 'rw', isa => ZeroOrOne, default => sub { 0 });
 
 =head1 DESCRIPTION
 

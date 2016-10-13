@@ -13,10 +13,10 @@ eval { Games::Cards::Pair::Card->new({ value => 'queen' }); };
 like($@, qr/Attribute \(suit\) is required/);
 
 eval { Games::Cards::Pair::Card->new({ suit => 'CC', value => 1 }); };
-like($@, qr/isa check for "suit" failed/);
+like($@, qr/isa check for 'suit' failed/);
 
 eval { Games::Cards::Pair::Card->new({ suit => 'C', value => 'queens' }); };
-like($@, qr/isa check for "value" failed/);
+like($@, qr/isa check for 'value' failed/);
 
 eval { Games::Cards::Pair::Card->new({ suit => 'C', value => 'joker' }); };
 like($@, qr/Attribute \(suit\) is NOT required for Joker/);

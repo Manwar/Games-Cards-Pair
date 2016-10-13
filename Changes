@@ -1,5 +1,8 @@
 Revision history for Games::Cards::Pair
 
+0.15  Thu Oct 13 12:10:00 2016
+      - Improved type definitions for 'ZeroOrOne', 'Suit' and 'Value'.
+
 0.14  Sun Aug 14 08:10:00 2016
       - Added test scripts (t/meta-json.t and t/meta-yml.t).
 

@@ -1,6 +1,6 @@
 package Games::Cards::Pair::Card;
 
-$Games::Cards::Pair::Card::VERSION   = '0.14';
+$Games::Cards::Pair::Card::VERSION   = '0.15';
 $Games::Cards::Pair::Card::AUTHORITY = 'cpan:MANWAR';
 
 =head1 NAME
@@ -9,22 +9,23 @@ Games::Cards::Pair::Card - Object representation of a card.
 
 =head1 VERSION
 
-Version 0.14
+Version 0.15
 
 =cut
 
 use 5.006;
 use Data::Dumper;
-use Games::Cards::Pair::Params qw($Num $Value $Suit);
+use Types::Standard qw(Int);
+use Games::Cards::Pair::Params qw(Value Suit);
 
 use Moo;
 use namespace::clean;
 
 use overload ( '""'  => \&as_string );
 
-has 'index' => (is => 'rw', isa => $Num );
-has 'suit'  => (is => 'ro', isa => $Suit);
-has 'value' => (is => 'ro', isa => $Value, required => 1);
+has 'index' => (is => 'rw', isa => Int );
+has 'suit'  => (is => 'ro', isa => Suit);
+has 'value' => (is => 'ro', isa => Value, required => 1);
 
 =head1 DESCRIPTION
 

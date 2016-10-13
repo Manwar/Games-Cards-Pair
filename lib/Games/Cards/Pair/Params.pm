@@ -1,6 +1,6 @@
 package Games::Cards::Pair::Params;
 
-$Games::Cards::Pair::Params::VERSION   = '0.14';
+$Games::Cards::Pair::Params::VERSION   = '0.15';
 $Games::Cards::Pair::Params::AUTHORITY = 'cpan:MANWAR';
 
 =head1 NAME
@@ -9,7 +9,7 @@ Games::Cards::Pair::Params - Placeholder for parameters for Games::Cards::Pair.
 
 =head1 VERSION
 
-Version 0.14
+Version 0.15
 
 =cut
 
@@ -17,29 +17,30 @@ use 5.006;
 use strict; use warnings;
 use Data::Dumper;
 
-use vars qw(@ISA @EXPORT @EXPORT_OK);
+use Type::Library -base, -declare => qw(ZeroOrOne Suit Value);
+use Types::Standard qw(Str);
+use Type::Utils;
 
-require Exporter;
-@ISA = qw(Exporter);
-@EXPORT_OK = qw($Suit $Value $ZeroOrOne $Num);
+my $SUITS  = { 'C' => 1, 'D' => 1, 'H' => 1, 'S' => 1 };
+my $VALUES = { '2' => 1, '3' => 1, '4' => 1, '5' => 1,
+               '6' => 1, '7' => 1, '8' => 1, '9' => 1,
+               '10'=> 1, 'A' => 1, 'J' => 1, 'Q' => 1,
+               'K' => 1, 'Joker' => 1 };
 
-my $SUITS =     { 'C' => 1, 'D' => 1, 'H' => 1, 'S' => 1 };
-our $Suit = sub { die "ERROR: Invalid data type 'suit' [$_[0]]" unless check_suit($_[0]); };
-sub check_suit  { return exists $SUITS->{ucfirst(lc($_[0]))} };
+declare 'ZeroOrOne',
+    as Str,
+    where   { /^[0|1]$/ },
+    message { "ERROR: Only 0 or 1 allowed." };
 
-my $VALUES    = { '2' => 1, '3' => 1, '4' => 1, '5' => 1, '6' => 1,
-                  '7' => 1, '8' => 1, '9' => 1, '10'=> 1,
-                  'A' => 1, 'J' => 1, 'Q' => 1, 'K' => 1, 'Joker' => 1 };
-our $Value    = sub { die "ERROR: Invalid data type 'value' [$_[0]]" unless check_value($_[0]); };
-sub check_value { return exists $VALUES->{ucfirst(lc($_[0]))} };
+declare 'Suit',
+    as Str,
+    where   { exists $SUITS->{ucfirst(lc($_[0]))} },
+    message { "isa check for 'suit' failed." };
 
-our $ZeroOrOne = sub  { die "ERROR: Invalid data found [$_[0]]" unless check_zero_or_one($_[0]); };
-sub check_zero_or_one { return (defined($_[0]) && ($_[0] =~ /^\d$/) && ($_[0] == 0 || $_[0] == 1)); }
-
-our $Num = sub { return check_num($_[0]); };
-sub check_num  { die "ERROR: Invalid NUM data type [$_[0]]" unless (defined $_[0] && $_[0] =~ /^\d+$/); }
-
-sub check_str  { die "ERROR: Invalid STR data type [$_[0]]" if (defined $_[0] && $_[0] =~ /^\d+$/); }
+declare 'Value',
+    as Str,
+    where   { exists $VALUES->{ucfirst(lc($_[0]))} },
+    message { "isa check for 'value' failed." };
 
 =head1 AUTHOR
 

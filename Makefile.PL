@@ -30,9 +30,9 @@ WriteMakefile(
     (eval { ExtUtils::MakeMaker->VERSION(6.46) } ? (META_MERGE => {
         'meta-spec' => { version => 2 },
         provides    => {
-            'Games::Cards::Pair'         => { file => 'lib/Games/Cards/Pair.pm'       , version => '0.14' },
-            'Games::Cards::Pair::Card'   => { file => 'lib/Games/Cards/Pair/Card.pm'  , version => '0.14' },
-            'Games::Cards::Pair::Params' => { file => 'lib/Games/Cards/Pair/Params.pm', version => '0.14' },
+            'Games::Cards::Pair'         => { file => 'lib/Games/Cards/Pair.pm'       , version => '0.15' },
+            'Games::Cards::Pair::Card'   => { file => 'lib/Games/Cards/Pair/Card.pm'  , version => '0.15' },
+            'Games::Cards::Pair::Params' => { file => 'lib/Games/Cards/Pair/Params.pm', version => '0.15' },
         },
         resources => {
             repository => {

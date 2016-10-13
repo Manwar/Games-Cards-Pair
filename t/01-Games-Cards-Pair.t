@@ -13,10 +13,10 @@ $card = $game->play("1,2");
 ok($card);
 
 eval { Games::Cards::Pair->new({ debug => 'a' }) };
-like($@, qr/isa check for "debug" failed/);
+like($@, qr/ERROR: Only 0 or 1 allowed./);
 
 eval { Games::Cards::Pair->new({ debug => 2 }) };
-like($@, qr/isa check for "debug" failed/);
+like($@, qr/ERROR: Only 0 or 1 allowed./);
 
 eval { $game->play($game) };
 like($@, qr/ERROR: Invalid card received/);
