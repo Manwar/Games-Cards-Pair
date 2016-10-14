@@ -1,6 +1,6 @@
 package Games::Cards::Pair::Params;
 
-$Games::Cards::Pair::Params::VERSION   = '0.15';
+$Games::Cards::Pair::Params::VERSION   = '0.16';
 $Games::Cards::Pair::Params::AUTHORITY = 'cpan:MANWAR';
 
 =head1 NAME
@@ -9,7 +9,7 @@ Games::Cards::Pair::Params - Placeholder for parameters for Games::Cards::Pair.
 
 =head1 VERSION
 
-Version 0.15
+Version 0.16
 
 =cut
 
@@ -17,8 +17,8 @@ use 5.006;
 use strict; use warnings;
 use Data::Dumper;
 
-use Type::Library -base, -declare => qw(ZeroOrOne Suit Value);
-use Types::Standard qw(Str);
+use Type::Library -base, -declare => qw(ZeroOrOne Suit Value Card Cards);
+use Types::Standard qw(Str Object ArrayRef);
 use Type::Utils;
 
 my $SUITS  = { 'C' => 1, 'D' => 1, 'H' => 1, 'S' => 1 };
@@ -41,6 +41,14 @@ declare 'Value',
     as Str,
     where   { exists $VALUES->{ucfirst(lc($_[0]))} },
     message { "isa check for 'value' failed." };
+
+declare 'Card',
+    as Object,
+    where   { ref($_[0]) eq 'Games::Cards::Pair::Card' };
+
+declare 'Cards',
+    as ArrayRef[Card],
+    message { "isa check for 'cards' failed." };
 
 =head1 AUTHOR
 

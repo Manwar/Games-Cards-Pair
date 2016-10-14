@@ -1,5 +1,9 @@
 Revision history for Games::Cards::Pair
 
+0.16  Fri Oct 14 10:20:00 2016
+      - Added missing dependency Type::Tiny.
+      - Added new attribute type definitions 'Card' and 'Cards'.
+
 0.15  Thu Oct 13 12:10:00 2016
       - Improved type definitions for 'ZeroOrOne', 'Suit' and 'Value'.
 
